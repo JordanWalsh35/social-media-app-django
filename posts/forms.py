@@ -4,7 +4,7 @@ from . import models
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = models.Post
-        fields = ("file", "caption")
+        fields = ("photo", "caption")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

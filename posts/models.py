@@ -7,7 +7,7 @@ from accounts.models import UserProfile
 
 class Post(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="posts")
-    file = models.FileField(upload_to="posts_files")
+    photo = models.ImageField(upload_to="post_photos", null=True)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
     caption = models.CharField(max_length=100, blank=True)
@@ -21,10 +21,10 @@ class Post(models.Model):
     class Meta:
         ordering = ["-time_created"]
         verbose_name_plural = 'Posts'
-        # unique_together?
 
 
 # class Comment(models.Model):
+#     user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="commenter")
 
 
 class Like(models.Model):

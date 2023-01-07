@@ -15,6 +15,3 @@ class HomeView(generic.ListView):
         if request.user.is_authenticated:
             return super().get(request, *args, **kwargs)
         return HttpResponseRedirect(reverse("accounts:login"))
-
-    # def get_queryset(self):
-    #     return get_posts(self.request.user, wall=True)

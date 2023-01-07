@@ -56,11 +56,7 @@ class DetailedPostView(LoginRequiredMixin, generic.DetailView):
     model = models.Post
     context_object_name = 'post'
     template_name = "posts/detailed_post.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['post'] = get_post(self.kwargs['pk'])
-        return context
+    queryset = models.Post.objects.all()
 
 
 @login_required
