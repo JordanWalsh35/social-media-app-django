@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Social Media App</title>
+
+    <!-- Connect to Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- CSS Sheet -->
+    <link rel="stylesheet" href="{% static 'css/social.css' %}">
+
+    <!-- Font: Gochi Hand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar custom-navigation">
+      <div class="container">
+
+        <div class="col-md-4">
+          <a class="logoFont" href="">Instagram</a>
+        </div>
+
+        <div class="col-md-4 search-container">
+          <input type="search-field" placeholder="Search">
+        </div>
+
+        <div class="col-md-4 navbar-right">
+          <ul class="nav-icons">
+            <a href="{% url 'home' %}"><button type="button" class="btn custom-btn"><span class="glyphicon glyphicon-home"></span></button></a>
+            <a href="{% url 'posts:create' %}"><img src="{% static 'images/new-post-icon.png' %}" id="post" alt="new-post"></a>
+            <a href="#"><img src="{% static 'images/heart-icon.png' %}" id="heart" alt="new-post"></a>
+            <a href="{% url 'accounts:profile' request.user.username %}"><img src="{% static 'images/user.png' %}" id="user" alt="user-profile"></a>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container mycontent">
+      {% block content %}
+
+      {% endblock %}
+    </div>
+
+  </body>
+</html>

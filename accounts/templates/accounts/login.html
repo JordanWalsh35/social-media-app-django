@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+
+    <!-- Connect to Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- CSS Sheet -->
+    <link rel="stylesheet" href="{% static 'css/social.css' %}">
+
+    <!-- Font: Gochi Hand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="login-box">
+          <form class="form-inputs" method="post">
+            {% csrf_token %}
+            <div class="form-inputs">
+              <a class="logoFont" href="#">Instagram</a><br><br>
+              {{form.as_p}}
+              <input type="submit" value="Log in" class="btn btn-primary btn-large form-inputs"><br><br>
+              <a href="#">Forgot password?</a>
+            </div>
+          </form>
+      </div>
+      <div class="sign-up-box">
+        <p class="sign-up-inputs">Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a></p>
+      </div>
+    </div>
+
+  </body>
+</html>
