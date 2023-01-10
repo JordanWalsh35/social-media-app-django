@@ -12,10 +12,10 @@ class Post(models.Model):
     time_updated = models.DateTimeField(auto_now=True)
     caption = models.CharField(max_length=100, blank=True)
 
-    def __str__():
+    def __str__(self):
         return self.pk
 
-    def get_absolute_url():
+    def get_absolute_url(self):
         return reverse("posts:detailed", kwargs={"username": self.user.username, "pk": self.pk})
 
     class Meta:
@@ -23,8 +23,14 @@ class Post(models.Model):
         verbose_name_plural = 'Posts'
 
 
-# class Comment(models.Model):
-#     user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="commenter")
+class Comment(models.Model):
+    user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="commenter")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment_post")
+    comment = models.CharField(max_length=200)
+    time_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comment
 
 
 class Like(models.Model):
@@ -34,3 +40,6 @@ class Like(models.Model):
 
     def __str__(self):
         return '{} : {}'.format(self.user, self.post)
+
+    class Meta:
+        unique_together = ("post", "user")

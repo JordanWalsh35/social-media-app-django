@@ -1,9 +1,15 @@
-<div class="">
-  <a href="{% url 'accounts:profile' post.user.username %}">Author profile</a>
-</div>
+<div class="postview">
+  <div class="" id="postusername">
+    <a class="postuser" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
+  </div>
 
-<div class="">
-  <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="300px" height="300px">
-  <p>{{post.caption}}</p>
-  <p>{{post.time_created}}</p>
+  <div class="image">
+    <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="938px" height="700px">
+  </div>
+
+  <div class="">
+    <p>{{post.caption}}</p>
+    <p>{{post.time_created}}</p>
+    <p>{{post.photo.url}}</p>
+  </div>
 </div>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{post.caption}">
+
+<p>Number of likes: </p>
+
+{% if user in post.like_user %}
+    <a href="{% url 'posts:unlike' post.pk  %}">Unlike</a>
+{% else %}
+    <a href="{% url 'posts:like' post.pk %}">Like</a>
+{% endif %}
+
+{% endblock %}

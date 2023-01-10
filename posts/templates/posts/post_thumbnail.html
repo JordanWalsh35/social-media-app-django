@@ -1,0 +1,5 @@
+<div class="">
+  <a href="{% url 'posts:detailed' post.pk %}">
+    <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="300px" height="300px">
+  </a>
+</div>

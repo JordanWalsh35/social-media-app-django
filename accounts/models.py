@@ -5,16 +5,10 @@ from django.contrib.auth.models import User
 
 
 class UserProfile(auth.models.User):
-    profile_picture = models.ImageField(upload_to="accounts/profile_pics", blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, parent_link=True)
+    profile_picture = models.ImageField(upload_to="profile_pics", null=True, blank=True)
+    following = models.ManyToManyField("UserProfile", related_name="user_following", blank=True)
+    followers = models.ManyToManyField("UserProfile", related_name="user_followers", blank=True)
 
     def __str__(self):
         return self.username
-
-
-# class Connection(models.Model):
-#     follower = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="follower")
-#     following = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="following")
-#     time_created = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return "{} : {}".format(self.follower.username, self.following.username)

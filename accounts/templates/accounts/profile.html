@@ -1,21 +1,41 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block content %}
 <h1>This is user profile</h1>
 
-<p>Welcome {{ user.username }}</p>
-<p>Welcome {{ user.email }}</p>
+{% if user.profile_picture %}
+  <img class="profilepic" src="{{user.profile_picture.url}}" alt="profile_picture">
+{% else %}
+  <img class="profilepic" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+{% endif %}
+
+<p>Welcome {{ user.username }}</p><br>
+<p>Welcome {{ request.user.username }}</p><br>
+
+<p>Posts: {{ user.posts.count }}</p><br>
+<p>Followers: {{ user.followers.count }}</p><br>
+<p>Following: {{ user.following.count }}</p><br>
+
 
 <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
 
 <div class="container">
   {% for post in posts %}
-    <div class="">
-      <a href="{% url 'posts:detailed' post.pk %}">
-        <img src="{{post.file.url}}" alt="{{post.title}}">
-      </a>
-    </div>
+    {% include "posts/post_thumbnail.html" %}
   {% endfor %}
 </div>
+<br>
+<br>
+{% if user.username == request.user.username %}
+    <a href="{% url 'accounts:update' user %}">Edit Profile</a>
+{% elif connected %}
+    <a href="{% url 'accounts:unfollow' username %}">Unfollow</a>
+{% else %}
+    <a href="{% url 'accounts:follow' username %}">Follow</a>
+{% endif %}
+
+<br>
+<br>
 
 
 {% endblock %}

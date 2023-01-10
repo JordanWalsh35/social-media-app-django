@@ -2,15 +2,16 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from . import models, forms
+from .forms import CreatePostForm, UpdatePostForm
+from.models import Post, Like, Comment
+from django.contrib import messages
 from accounts.models import UserProfile
 from django.views import generic
-from .post_functions import get_post
 from django.http import HttpResponseRedirect
 
 
 class CreatePostView(LoginRequiredMixin, generic.CreateView):
-    form_class = forms.CreatePostForm
+    form_class = CreatePostForm
     template_name = "posts/create_post.html"
 
     def get_success_url(self):
@@ -23,7 +24,7 @@ class CreatePostView(LoginRequiredMixin, generic.CreateView):
 
 class UpdatePostView(LoginRequiredMixin, generic.UpdateView):
     form_valid_message = "Your post has been updated."
-    form_class = forms.UpdatePostForm
+    form_class = UpdatePostForm
     template_name = "posts/create_post.html"
 
     def get(self, request, *args, **kwargs):
@@ -37,13 +38,13 @@ class UpdatePostView(LoginRequiredMixin, generic.UpdateView):
 
 
 class DeletePostView(LoginRequiredMixin, generic.DeleteView):
-    model = models.Post
+    model = Post
     form_valid_message = "Your post has been deleted."
     success_url = reverse_lazy("home")
     template_name = 'posts/delete_post.html'
 
     def get(self, request, *args, **kwargs):
-        post = models.Post.objects.get(pk=kwargs['pk'])
+        post = Post.objects.get(pk=kwargs['pk'])
 
         if post.user != request.user:
             messages.warning(request, "You don't have permission to delete this post.")
@@ -53,20 +54,36 @@ class DeletePostView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DetailedPostView(LoginRequiredMixin, generic.DetailView):
-    model = models.Post
+    model = Post
     context_object_name = 'post'
     template_name = "posts/detailed_post.html"
-    queryset = models.Post.objects.all()
+    queryset = Post.objects.all()
 
 
 @login_required
 def like_post_view(request, *args, **kwargs):
-    try:
-        post = Post.objects.get(pk=kwargs['pk'])
-        _, created = Like.objects.get_or_create(post=post, user=request.user)
+    post = Post.objects.get(pk=kwargs['pk'])
+    user = UserProfile.objects.get(user=request.user)
+    like = Like(user=user, post=post)
+    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
 
-        if not created:
-            messages.warning(request, "You've already liked this post.")
-    except Post.DoesNotExist:
-        messages.warning(request, "Post does not exist.")
-    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={"pk":kwargs["pk"]}))
+
+def unlike_post_view(request, *args, **kwargs):
+    # try:
+    user = UserProfile.objects.get(user=request.user)
+    post = Post.objects.get(pk=kwargs['pk'])
+    like = Like.objects.get(pk=kwargs['pk'], user=user)
+    # except Like.DoesNotExist:
+    #     messages.warning(request, "You didn't like the post.")
+    # else:
+    like.delete()
+
+    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
+
+
+def add_comment_view(request, *args, **kwargs):
+    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
+
+
+def delete_comment_view(request, *args, **kwargs):
+    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))

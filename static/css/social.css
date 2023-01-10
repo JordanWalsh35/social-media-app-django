@@ -79,7 +79,7 @@ body{
 }
 
 .form-inputs{
-  margin: 5px;
+  margin: 10px;
   text-align: center;
 }
 
@@ -88,7 +88,7 @@ body{
   border: 1px solid rgba(0, 0, 0, 0.1);
   height: 40px;
   text-align: left;
-  margin: 5px;
+  margin: 8px;
   width: 300px;
 }
 
@@ -102,4 +102,30 @@ body{
   margin-top: 20px;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.postview{
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 10px 100px 10px 100px;
+}
+
+.image{
+  margin: 10px 0px 10px 0px;
+}
+
+.postuser{
+  color: black;
+  font-size: 20px;
+}
+
+#postusername{
+  margin: 20px
+}
+
+
+.profilepic{
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
 }
