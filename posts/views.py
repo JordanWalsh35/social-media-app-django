@@ -2,12 +2,15 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from .forms import CreatePostForm, UpdatePostForm
-from.models import Post, Like, Comment
-from django.contrib import messages
-from accounts.models import UserProfile
 from django.views import generic
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+
+from .forms import CreatePostForm, UpdatePostForm, CreateCommentForm
+from .models import Post, Like, Comment
+from accounts.models import UserProfile
+
+
 
 
 class CreatePostView(LoginRequiredMixin, generic.CreateView):
@@ -20,6 +23,7 @@ class CreatePostView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.user = UserProfile.objects.get(username=self.request.user)
         return super().form_valid(form)
+
 
 
 class UpdatePostView(LoginRequiredMixin, generic.UpdateView):
@@ -37,11 +41,12 @@ class UpdatePostView(LoginRequiredMixin, generic.UpdateView):
             return super().get(request, *args, **kwargs)
 
 
+
 class DeletePostView(LoginRequiredMixin, generic.DeleteView):
     model = Post
     form_valid_message = "Your post has been deleted."
     success_url = reverse_lazy("home")
-    template_name = 'posts/delete_post.html'
+    template_name = "posts/delete_post.html"
 
     def get(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs['pk'])
@@ -53,37 +58,59 @@ class DeletePostView(LoginRequiredMixin, generic.DeleteView):
             return super().get(request, *args, **kwargs)
 
 
-class DetailedPostView(LoginRequiredMixin, generic.DetailView):
-    model = Post
-    context_object_name = 'post'
-    template_name = "posts/detailed_post.html"
-    queryset = Post.objects.all()
+
+@login_required
+def detailed_post_view(request, pk):
+    user = UserProfile.objects.get(user=request.user)
+    post = Post.objects.get(pk=pk)
+    comments = post.comment_post
+    new_comment = None
+
+    try:
+        like = Like.objects.get(post=post, user=user)
+        liked = True
+    except:
+        liked = False
+
+    if request.method == 'POST':
+        comment_form = CreateCommentForm(data=request.POST)
+
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = user
+            new_comment.save()
+        return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':pk}))
+    else:
+        comment_form = CreateCommentForm()
+
+    context = {'post':post, 'comments':comments, 'new_comment':new_comment, 'comment_form':comment_form}
+    context['liked'] = True if liked else False
+
+    return render(request, "posts/detailed_post.html", context)
+
 
 
 @login_required
 def like_post_view(request, *args, **kwargs):
+
     post = Post.objects.get(pk=kwargs['pk'])
     user = UserProfile.objects.get(user=request.user)
+
     like = Like(user=user, post=post)
+    like.save()
+
     return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
 
 
+
+@login_required
 def unlike_post_view(request, *args, **kwargs):
-    # try:
+
     user = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(pk=kwargs['pk'])
-    like = Like.objects.get(pk=kwargs['pk'], user=user)
-    # except Like.DoesNotExist:
-    #     messages.warning(request, "You didn't like the post.")
-    # else:
+
+    like = Like.objects.get(post=post, user=user)
     like.delete()
 
-    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
-
-
-def add_comment_view(request, *args, **kwargs):
-    return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
-
-
-def delete_comment_view(request, *args, **kwargs):
     return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))

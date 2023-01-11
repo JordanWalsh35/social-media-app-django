@@ -13,7 +13,7 @@ class Post(models.Model):
     caption = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
     def get_absolute_url(self):
         return reverse("posts:detailed", kwargs={"username": self.user.username, "pk": self.pk})
@@ -26,11 +26,14 @@ class Post(models.Model):
 class Comment(models.Model):
     user =  models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="commenter")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comment_post")
-    comment = models.CharField(max_length=200)
+    comment = models.TextField(max_length=200)
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.comment
+        return str(self.comment)
+
+    class Meta:
+        ordering = ['time_created']
 
 
 class Like(models.Model):
@@ -39,7 +42,7 @@ class Like(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{} : {}'.format(self.user, self.post)
+        return str('{} : {}'.format(self.user.username, self.post.pk))
 
     class Meta:
         unique_together = ("post", "user")

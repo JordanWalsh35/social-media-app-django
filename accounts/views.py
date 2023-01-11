@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from posts.models import Post
 
-from . import forms
+from .forms import NewUserForm
 from .models import UserProfile
 
 
@@ -23,7 +23,7 @@ class MyLogoutView(LogoutView):
 
 
 class SignUpView(CreateView):
-    form_class = forms.NewUserForm
+    form_class = NewUserForm
     success_url = reverse_lazy("accounts:login")
     template_name = "accounts/signup.html"
 

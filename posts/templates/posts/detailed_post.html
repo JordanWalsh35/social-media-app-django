@@ -1,14 +1,34 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{post.caption}">
 
-<p>Number of likes: </p>
+<p>Number of likes: {{post.liked_post.count}}</p>
 
-{% if user in post.like_user %}
-    <a href="{% url 'posts:unlike' post.pk  %}">Unlike</a>
+
+{% if liked %}
+    <a href="{% url 'posts:unlike' post.pk %}">Unlike</a>
 {% else %}
     <a href="{% url 'posts:like' post.pk %}">Like</a>
 {% endif %}
+
+{% for comment in comments.all %}
+  <p>{{comment.user.username}}</p>
+  <p>{{comment.comment}}</p>
+{% endfor %}
+
+<br>
+<br>
+
+<div class="container">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{comment_form.as_p}}
+    <input type="submit" value="Add a comment..." class="btn btn-primary btn-large form-inputs"><br><br>
+  </form>
+</div>
+
+
+Number of comments: {{post.comment.all.count}}
+
 
 {% endblock %}

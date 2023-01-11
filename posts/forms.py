@@ -1,9 +1,9 @@
 from django import forms
-from . import models
+from .models import Post, Comment
 
 class CreatePostForm(forms.ModelForm):
     class Meta:
-        model = models.Post
+        model = Post
         fields = ("photo", "caption")
 
     def __init__(self, *args, **kwargs):
@@ -12,8 +12,17 @@ class CreatePostForm(forms.ModelForm):
 
 class UpdatePostForm(forms.ModelForm):
     class Meta:
-        model = models.Post
+        model = Post
         fields = ("caption",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class CreateCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("comment",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
