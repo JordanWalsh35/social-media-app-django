@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <h1>This is user profile</h1>
 
@@ -16,8 +16,9 @@
 <p>Followers: {{ user.followers.count }}</p><br>
 <p>Following: {{ user.following.count }}</p><br>
 
-
-<p><a href="{% url 'accounts:logout' %}">Logout</a></p>
+{% if request.user.username == user.username %}
+  <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
+{% endif %}
 
 <div class="container">
   {% for post in posts %}

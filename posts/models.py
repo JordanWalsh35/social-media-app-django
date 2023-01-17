@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from accounts.models import UserProfile
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
@@ -46,3 +47,18 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("post", "user")
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="sender")
+    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="receiver")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
+    liked = models.BooleanField(default=False, null=True)
+    followed = models.BooleanField(default=False, null=True)
+    time_created = models.DateTimeField(null=True, blank=True)
+
+    options=(("Unread", "Unread"),
+             ("Read", "Read"),)
+
+    read_status = models.CharField(max_length=10, choices=options, default="Unread")

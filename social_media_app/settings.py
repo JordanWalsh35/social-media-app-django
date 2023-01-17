@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'posts',
+    'accounts.apps.AccountsConfig',
+    'posts.apps.PostsConfig',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'posts.content_processors.notification_count',
             ],
         },
     },
@@ -81,6 +82,19 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+# CACHES = {
+#
+# }
+
+CACHES = {
+    "default": {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
+        },
+}
+
 
 
 # Password validation
@@ -107,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'GMT'
 
 USE_I18N = True
 
@@ -126,5 +140,5 @@ LOGIN_REDIRECT_URL = "home"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-POSTS_ROOT = os.path.join(MEDIA_ROOT, 'posts')
-POSTS_URL = '/media/posts/'
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'

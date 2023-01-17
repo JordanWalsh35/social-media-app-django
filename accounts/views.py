@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, DetailView, ListView, UpdateView
@@ -6,11 +6,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import get_user_model
-from posts.models import Post
+from django.http import JsonResponse
 
+from posts.models import Post
 from .forms import NewUserForm
 from .models import UserProfile
+
 
 
 class MyLoginView(LoginView):
@@ -28,6 +29,30 @@ class SignUpView(CreateView):
     template_name = "accounts/signup.html"
 
 
+class UpdateProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "accounts/update_account.html"
+
+
+class FollowersView(LoginRequiredMixin, ListView):
+    template_name = "accounts/followers.html"
+    model = UserProfile
+    context_object_name ='user'
+
+    def get_queryset(self):
+        obj = get_object_or_404(UserProfile, username = self.kwargs.get('username'))
+        return obj
+
+
+class FollowingView(LoginRequiredMixin, ListView):
+    template_name = "accounts/following.html"
+    model = UserProfile
+    context_object_name ='user'
+
+    def get_queryset(self):
+        obj = get_object_or_404(UserProfile, username = self.kwargs.get('username'))
+        return obj
+
+
 @login_required
 def user_profile_view(request, username):
     user = UserProfile.objects.get(username=username)
@@ -41,10 +66,6 @@ def user_profile_view(request, username):
         context['connected'] = True if connected else False
 
     return render(request, 'accounts/profile.html', context)
-
-
-class UpdateProfileView(LoginRequiredMixin, TemplateView):
-    template_name = "accounts/update_account.html"
 
 
 @login_required
@@ -73,3 +94,18 @@ def unfollow_view(request, username):
         messages.warning("System Error: Please Try Again")
 
     return HttpResponseRedirect(reverse_lazy("accounts:profile", kwargs={'username':user}))
+
+
+def user_search(request):
+    search = request.GET.get('search')
+    payload = []
+    if search:
+        objs = UserProfile.objects.filter(username__icontains = search)
+
+        for obj in objs:
+            payload.append(obj.username)
+
+    return JsonResponse({
+        'status' : True,
+        'data' : payload
+    })

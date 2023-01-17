@@ -14,4 +14,6 @@ urlpatterns = [
      path("<str:username>/update/", views.UpdateProfileView.as_view(), name="update"),
      path("<str:username>/follow/", views.follow_view, name="follow"),
      path("<str:username>/unfollow/", views.unfollow_view, name="unfollow"),
+     path("<str:username>/followers/", views.FollowersView.as_view(), name="followers"),
+     path("<str:username>/following/", views.FollowingView.as_view(), name="following"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

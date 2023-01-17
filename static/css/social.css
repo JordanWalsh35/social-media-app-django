@@ -4,70 +4,11 @@ body{
   background-color:  #fafafa;
 }
 
-.logoFont{
-  font-family: "billabong", sans-serif;
-  color: black;
-  font-size: 48px;
-  position: relative;
-}
-
-.custom-navigation{
-  background-color: #ffffff;
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.custom-btn{
-  background-color: white;
-  color: black;
-  border-width: 0px;
-  font-size: 25px;
-  padding: 23px 5px 0px 5px;
-}
-
-.nav-icons{
-  margin-left: 100px;
-}
-
-
-#post {
-  width: 13%;
-  height: 18%;
-  background-color: white;
-  padding-top: 17px;
-  margin-left: 7px;
-}
-
-#heart {
-  width: 18%;
-  height: 23%;
-  background-color: white;
-  padding-top: 17px;
-  margin-left: 7px;
-}
-
-#user {
-  margin-left: 8px;
-  width: 15%;
-  height: 20%;
-  background-color: white;
-  padding-top: 17px;
-}
-
-.search-container{
-  position: relative;
-  padding-top: 25px;
-  text-align: center;
-}
-
-.search-container input {
-  background-color: #fafafa;
-  height: 30px;
-  text-align: center;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-  font-size: 14px;
-  padding: 5px 35px 5px 35px;
+.contain{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
 }
 
 
@@ -78,10 +19,12 @@ body{
   padding: 25px;
 }
 
+
 .form-inputs{
   margin: 10px;
   text-align: center;
 }
+
 
 .input-boxes{
   background-color: #fafafa;
@@ -92,11 +35,13 @@ body{
   width: 300px;
 }
 
+
 .sign-up-box{
   background-color: white;
   margin: 5px 300px 5px 300px;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 
 .sign-up-inputs{
   margin-top: 20px;
@@ -104,20 +49,24 @@ body{
   text-align: center;
 }
 
+
 .postview{
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 10px 100px 10px 100px;
 }
 
+
 .image{
   margin: 10px 0px 10px 0px;
 }
+
 
 .postuser{
   color: black;
   font-size: 20px;
 }
+
 
 #postusername{
   margin: 20px
@@ -128,4 +77,21 @@ body{
   height: 200px;
   width: 200px;
   border-radius: 100%;
+}
+
+
+.pending{
+  border-radius: 50%;
+  font-size: 15px;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  font-size: 1em;
+  justify-content: center;
+  color: white;
+  position: fixed;
+  margin-top: 13px;
+  margin-left: -13px;
+  position: center;
+  padding-left: 6px;
 }
