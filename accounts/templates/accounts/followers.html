@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+  <h1>Followers.html</h1>
+
+{% for profile in user.followers.all %}
+  <p>{{profile.username}}</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

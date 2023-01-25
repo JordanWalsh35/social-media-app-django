@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+  {% for notification in view_notifications %}
+
+    {% include "posts/_notification.html" %}
+
+  {% endfor %}
+</div>
+
+
+{% endblock %}
