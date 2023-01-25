@@ -1,11 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>This is feed.html</h1>
 
-<div class="container">
-  {% for post in posts %}
-    {% include "posts/post.html" %}
-  {% endfor %}
-</div>
+    {% for post in posts %}
+    <div class="feed-container">
+
+            <div class="post-header">
+              <a class="" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
+            </div>
+
+            <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="100%" height="100%">
+
+            <div class="post-footer">
+              {% if post.liked %}
+                  <a href="{% url 'posts:unlike' post.pk %}">Unlike</a>
+              {% else %}
+                  <a href="{% url 'posts:like' post.pk %}">Like</a>
+              {% endif %}
+
+              <p><b>{{post.liked_post.count}} likes</b></p>
+
+              <p><b>{{post.user.username}}</b> {{post.caption}}</p>
+
+              {% for comment in post.comments.all %}
+                <p>{{comment.user.username}}</p>
+                <p>{{comment.comment}}</p>
+              {% endfor %}
+
+              <p>{{post.time_created}}</p>
+
+              <p>{{post_pk}}</p>
+
+            </div>
+
+            <div class="post-comment">
+              <form method="POST" action="{% url 'feed' %}?post_id={{post.id}}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{post.comment_form.as_p}}
+                <input type="submit" value="Add a comment..." class="btn btn-primary btn-large"><br><br>
+              </form>
+            </div>
+
+    </div>
+
+    {% endfor %}
+
 
 {% endblock %}

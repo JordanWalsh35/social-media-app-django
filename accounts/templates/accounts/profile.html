@@ -1,42 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/test.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% endblock %}
+
 {% block content %}
-<h1>This is user profile</h1>
 
-{% if user.profile_picture %}
-  <img class="profilepic" src="{{user.profile_picture.url}}" alt="profile_picture">
-{% else %}
-  <img class="profilepic" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
-{% endif %}
+    <div class="container">
 
-<p>Welcome {{ user.username }}</p><br>
-<p>Welcome {{ request.user.username }}</p><br>
+      <div class="container profile-top">
 
-<p>Posts: {{ user.posts.count }}</p><br>
-<p>Followers: {{ user.followers.count }}</p><br>
-<p>Following: {{ user.following.count }}</p><br>
+        <div class="profile-pic-container col-md-4">
+          {% if user.profile_picture %}
+            <img class="profilepic" src="{{user.profile_picture.url}}" alt="profile_picture">
+          {% else %}
+            <img class="profilepic" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+            <p style="margin-top: 15px;"><a href="">Upload Profile Photo</a></p>
+          {% endif %}
+        </div>
 
-{% if request.user.username == user.username %}
-  <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
-{% endif %}
+        <div class="container-right col-md-8">
+              <div class="head-section">
+                <h2 style="font-size:30px;">{{user.username}}</h2>
+                <div class="follow-edit">
+                    {% if user.username == request.user.username %}
+                      <li><a href="{% url 'accounts:update' user %}">Edit Profile</a></li>
+                    {% elif connected %}
+                      <li><a href="{% url 'accounts:unfollow' username %}">Unfollow</a></li>
+                    {% else %}
+                      <li><a href="{% url 'accounts:follow' username %}">Follow</a></li>
+                    {% endif %}
+                </div>
+              </div>
 
-<div class="container">
-  {% for post in posts %}
-    {% include "posts/post_thumbnail.html" %}
-  {% endfor %}
-</div>
-<br>
-<br>
-{% if user.username == request.user.username %}
-    <a href="{% url 'accounts:update' user %}">Edit Profile</a>
-{% elif connected %}
-    <a href="{% url 'accounts:unfollow' username %}">Unfollow</a>
-{% else %}
-    <a href="{% url 'accounts:follow' username %}">Follow</a>
-{% endif %}
+              <div class="profile-attrs">
+                <ul>
+                  <li><a href="#">{{ user.posts.count }} posts</a></li>
+                  <li><a href="#">{{ user.followers.count }} followers</a></li>
+                  <li><a href="#">{{ user.following.count }} following</a></li>
+                </ul>
+              </div>
 
-<br>
-<br>
+        </div>
+      </div>
+
+
+    <div class="profile-posts">
+      <ul>
+          {% for post in posts %}
+            <li class="lists">{% include "posts/post_thumbnail.html" %}</li>
+          {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+    {% if request.user.username == user.username %}
+      <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
+    {% endif %}
+
 
 
 {% endblock %}

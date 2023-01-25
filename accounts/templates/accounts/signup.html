@@ -3,31 +3,29 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>jordiigram | Sign up</title>
+
     <!-- Connect to Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- CSS Sheet -->
-    <link rel="stylesheet" href="{% static 'css/social.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
 
-    <!-- Font: Gochi Hand -->
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
-      <div class="login-box">
-        <form method="post">
+    <div class="contain">
+      <div class="login-container">
+        <form method="POST">
           {% csrf_token %}
-
-          <div class="form-inputs">
-            <a class="logoFont" href="#">Instagram</a><br><br>
+          <div class="">
+            <a class="logo" href="#">jordiigram</a><br><br>
             {{form.as_p}}
-            <input type="submit" value="Sign up" class="btn btn-primary btn-large form-inputs"><br><br>
+            <input type="submit" value="Sign up" class="btn btn-primary btn-large"><br><br>
           </div>
         </form>
       </div>
-      <div class="sign-up-box">
-        <p class="sign-up-inputs">Have an account? <a href="{% url 'accounts:login' %}">Log in</a></p>
+      <div class="signup-container">
+        <p class="">Have an account? <a href="{% url 'accounts:login' %}">Log in</a></p>
       </div>
     </div>
   </body>

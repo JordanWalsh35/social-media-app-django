@@ -8,8 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 
-from posts.models import Post
-from .forms import NewUserForm
+from posts.models import Post, Like, Comment
+from .forms import LoginForm, NewUserForm
+from posts.forms import CreateCommentForm
 from .models import UserProfile
 
 
@@ -17,6 +18,7 @@ from .models import UserProfile
 class MyLoginView(LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
+    form_class = LoginForm
 
 
 class MyLogoutView(LogoutView):
@@ -58,6 +60,7 @@ def user_profile_view(request, username):
     user = UserProfile.objects.get(username=username)
     posts = Post.objects.filter(user__username=user)
     active_user = request.user.username
+    profile = UserProfile.objects.get(user=request.user)
 
     context={'username':username, 'user':user, 'posts':posts, 'active_user':active_user}
 
@@ -65,7 +68,24 @@ def user_profile_view(request, username):
         connected = user.followers.filter(user__username=active_user)
         context['connected'] = True if connected else False
 
+    for post in posts:
+        post.liked = Like.objects.filter(user=profile, post=post).exists()
+        post.comments = Comment.objects.filter(post=post)
+        post.comment_form = CreateCommentForm()
+
+    if request.method == 'POST':
+        post_id = request.GET.get('post_id')
+        post = Post.objects.get(id=post_id)
+        post.comment_form = CreateCommentForm(data=request.POST)
+        if post.comment_form.is_valid():
+            new_comment = post.comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = profile
+            new_comment.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     return render(request, 'accounts/profile.html', context)
+
 
 
 @login_required
@@ -80,6 +100,7 @@ def follow_view(request, username):
         messages.warning("System Error: Please Try Again")
 
     return HttpResponseRedirect(reverse_lazy("accounts:profile", kwargs={'username':user}))
+
 
 
 @login_required

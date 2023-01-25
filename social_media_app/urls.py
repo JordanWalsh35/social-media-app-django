@@ -5,9 +5,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 from accounts import views as account_views
+from posts import views as post_views
 
 urlpatterns = [
-    path("", views.HomeView.as_view(), name="home"),
+    path("", views.home_view, name="home"),
+    path("feed/", post_views.feed_post_view, name="feed"),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("posts/", include("posts.urls", namespace="posts")),

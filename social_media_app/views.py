@@ -3,21 +3,18 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from posts.models import Notification, Post
 from accounts.models import UserProfile
 
 
-class HomeView(generic.ListView):
-    model = Post
-    template_name = 'feed.html'
-    context_object_name = 'posts'
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().get(request, *args, **kwargs)
-        return HttpResponseRedirect(reverse("accounts:login"))
+def home_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("feed"))
+    return HttpResponseRedirect(reverse("accounts:login"))
+
 
 
 def view_notifications(request):

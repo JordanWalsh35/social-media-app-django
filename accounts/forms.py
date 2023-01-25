@@ -1,7 +1,12 @@
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm, UserChangeForm, PasswordChangeForm
 from django import forms
 from .models import UserProfile
+
+
+class LoginForm(AuthenticationForm):
+    username = UsernameField(label="", widget = forms.TextInput(attrs={'class':'input-boxes', 'placeholder':'Username'}))
+    password = forms.CharField(label="", strip=False, widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'class':'input-boxes', 'placeholder':'Password'}),)
 
 
 class NewUserForm(UserCreationForm):

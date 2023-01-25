@@ -1,15 +1,40 @@
-<div class="postview">
-  <div class="" id="postusername">
-    <a class="postuser" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
-  </div>
 
-  <div class="image">
-    <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="938px" height="700px">
-  </div>
+<div class="feed-container">
 
-  <div class="">
-    <p>{{post.caption}}</p>
-    <p>{{post.time_created}}</p>
-    <p>{{post.photo.url}}</p>
-  </div>
+        <div class="post-header">
+          <a class="" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
+        </div>
+
+        <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="100%" height="100%">
+
+        <div class="post-footer">
+          {% if liked %}
+              <a href="{% url 'posts:unlike' post.pk %}">Unlike</a>
+          {% else %}
+              <a href="{% url 'posts:like' post.pk %}">Like</a>
+          {% endif %}
+
+          <p><b>{{post.liked_post.count}} likes</b></p>
+
+          <p><b>{{post.user.username}}</b> {{post.caption}}</p>
+
+          {% for comment in comments.all %}
+            <p>{{comment.user.username}}</p>
+            <p>{{comment.comment}}</p>
+          {% endfor %}
+
+          <p>{{post.time_created}}</p>
+
+          <p>{{test}}</p>
+
+        </div>
+
+        <div class="post-comment">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{comment_form.as_p}}
+            <input type="submit" value="Add a comment..." class="btn btn-primary btn-large"><br><br>
+          </form>
+        </div>
+
 </div>

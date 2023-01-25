@@ -1,5 +1,74 @@
-<div class="">
-  <a href="{% url 'posts:detailed' post.pk %}">
-    <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="300px" height="300px">
+{% load static %}
+
+<div class="post-thumbnail">
+  <a href="#">
+    <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="320" height="320">
   </a>
 </div>
+<!-- data-post-pk="{{post.pk}}" -->
+
+
+<div id="postModal{{post.pk}}" class="modal fade" tabindex="-1">
+    <div class="modal-container">
+        <div class="modal-image">
+            <img src="{{MEDIA_URL}}{{post.photo.url}}" class="img-responsive">
+        </div>
+        <div class="modal-right">
+
+          <div class="modal-header">
+            <div class="profiler-container">
+              {% if user.profile_picture %}
+                <img class="profiler-small" src="{{user.profile_picture.url}}" alt="profile_picture">
+              {% else %}
+                <img class="profiler-small" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+              {% endif %}
+            </div>
+            <div class="header-right">
+              <p><b id="modal-username">{{post.user.username}}</b>
+                {% if connected %}
+                  <span style="font-size:18px;">&nbsp; &#8226; Following </span>
+                {% elif user.username != request.user.username %}
+                  <a href="{% url 'accounts:follow' username %}">Follow</a>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-comments">
+            <div class="container">
+              {% if post.liked %}
+                   <a id="modal-liked" href="{% url 'posts:unlike' post.pk %}">Unlike</a>
+              {% else %}
+                  <a href="{% url 'posts:like' post.pk %}">Like</a>
+              {% endif %}
+
+
+
+              <p><b>{{post.liked_post.count}} likes</b></p>
+
+              <p><b>{{post.user.username}}</b> {{post.caption}}</p>
+
+              {% for comment in post.comments.all %}
+                <p>{{comment.user.username}}</p>
+                <p>{{comment.comment}}</p>
+              {% endfor %}
+
+              <p>{{post.time_created}}</p>
+
+            </div>
+          </div>
+
+          <div class="modal-addcomment">
+            <form action="{% url 'accounts:profile' post.user.username %}?post_id={{post.id}}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="comment-left">
+                  {{post.comment_form}}
+              </div>
+              <div class="comment-right">
+                  <input type="submit" value="Post" class="comment-button"><br><br>
+              </div>
+            </form>
+          </div>
+        </div>
+   </div>
+ </div>
