@@ -2,4 +2,13 @@
 {% block content %}
 <h1>Update Profile</h1>
 
+<div class="">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+      {{user_form.as_p}}
+      <input type="submit" value="Submit" class="btn btn-primary btn-large"><br><br>
+  </form>
+</div>
+
+
 {% endblock %}

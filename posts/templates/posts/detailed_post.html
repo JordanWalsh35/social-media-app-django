@@ -1,34 +1,65 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
 
-<img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{post.caption}">
+{% block content %}
 
-<p>Number of likes: {{post.liked_post.count}}</p>
+<div class="feed-container">
 
+        <div class="post-header">
+          {% if post.user.profile_picture %}
+            <img class="post-profiler" src="{{post.user.profile_picture.url}}" alt="profile_picture">
+          {% else %}
+            <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+          {% endif %}
+          <a class="post-username" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
+        </div>
 
-{% if liked %}
-    <a href="{% url 'posts:unlike' post.pk %}">Unlike</a>
-{% else %}
-    <a href="{% url 'posts:like' post.pk %}">Like</a>
-{% endif %}
+        <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="100%" height="100%">
 
-{% for comment in comments.all %}
-  <p>{{comment.user.username}}</p>
-  <p>{{comment.comment}}</p>
-{% endfor %}
+        <div class="post-footer">
+          <div class="post-comments">
+            <div class="like-count{{post.id}}">
+                <b>{{post.liked_post.count}} likes</b>
+            </div>
 
-<br>
-<br>
+            <p><b>{{post.user.username}}</b> {{post.caption}}</p>
 
-<div class="container">
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{comment_form.as_p}}
-    <input type="submit" value="Add a comment..." class="btn btn-primary btn-large form-inputs"><br><br>
-  </form>
+            {% for comment in comments.all %}
+              <p><b>{{comment.user.username}}</b> {{comment.comment}}</p>
+            {% endfor %}
+
+          </div>
+
+          <div class="post-likes">
+            <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="post_id" value="{{post.id}}">
+                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
+                    {% if liked %}
+                        <img src="{% static 'images/heart-full.png' %}" height="35" width="35">
+                    {% else %}
+                        <img src="{% static 'images/heart-empty.png' %}" height="35" width="35">
+                    {% endif %}
+                </button>
+            </form>
+
+            <p>{{post.time_created}}</p>
+          </div>
+
+          <div class="post-comment-form">
+            <form method="POST" action="{% url 'feed' %}?post_id={{post.id}}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="comment-input">
+                  {{comment_form}}
+              </div>
+              <div class="post-comment-button">
+                  <input type="submit" value="Post" class="comment-button">
+              </div>
+            </form>
+          </div>
+
+        </div>
+<script src="{% static 'js/like.js' %}"></script>
 </div>
-
-
-Number of comments: {{comments.count}}
-
 
 {% endblock %}

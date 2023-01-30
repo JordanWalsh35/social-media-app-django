@@ -1,12 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
-
-<div class="container">
+<div class="notifications-container">
   {% for notification in view_notifications %}
-
-    {% include "posts/_notification.html" %}
-
+        <div class="notification">
+          <a href="{% url 'status' notification.pk %}">
+              <div class="notification-profiler">
+                {% if notification.user.profile_picture %}
+                  <img class="post-profiler" src="{{notification.user.profile_picture.url}}" alt="profile_picture">
+                {% else %}
+                  <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+                {% endif %}
+              </div>
+              <div class="notification-message">
+                {% if notification.followed %}
+                    {{notification.user}} just followed you.
+                {% elif notification.liked %}
+                    {{notification.user}} liked your post.
+                {% else %}
+                    {{notification.user}} commented on your post.
+                {% endif %}
+              </div>
+                <div class="notification-status">
+                    <p>{{notification.read_status}}</p>
+                </div>
+            </a>
+        </div>
   {% endfor %}
 </div>
 

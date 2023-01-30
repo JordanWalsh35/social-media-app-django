@@ -1,14 +1,30 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
-<div class="container">
-
-  <h1>Following.html</h1>
-
-{% for profile in user.following.all %}
-  <p>{{profile.username}}</p>
-{% endfor %}
-
+<div class="follower-container">
+    {% for profile in user.following.all %}
+      <div class="follower">
+          <div class="follow-profiler">
+              {% if profile.profile_picture %}
+                <img class="post-profiler" src="{{profile.profile_picture.url}}" alt="profile_picture">
+              {% else %}
+                <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+              {% endif %}
+          </div>
+          <div class="follow-username">
+              <a href="{% url 'accounts:profile' profile.username %}">{{profile.username}}</a>
+          </div>
+          <div class="follow-button">
+            {% if profile.username != request.user.username %}
+                {% if profile in user.followers.all %}
+                    <p>Follows you</p>
+                {% endif %}
+            {% endif %}
+          </div>
+      </div>
+    {% endfor %}
 </div>
 
 {% endblock %}

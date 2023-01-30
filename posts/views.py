@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from rest_framework.views import APIView
+from rest_framework import authentication, permissions
+from rest_framework.response import Response
+from django.http import JsonResponse
 
 from .forms import CreatePostForm, UpdatePostForm, CreateCommentForm
 from .models import Post, Like, Comment
@@ -73,14 +77,12 @@ def detailed_post_view(request, pk):
 
     if request.method == 'POST':
         comment_form = CreateCommentForm(data=request.POST)
-
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.post = post
             new_comment.user = user
             new_comment.save()
         return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':pk}))
-
     else:
         comment_form = CreateCommentForm()
 
@@ -88,39 +90,6 @@ def detailed_post_view(request, pk):
 
     return render(request, "posts/detailed_post.html", context)
 
-
-
-# class FeedView(LoginRequiredMixin, generic.ListView):
-#     template_name = "feed.html"
-#     ordering = ['-time_created']
-#     context_object_name = 'posts'
-#     model = Post
-#
-#     def post(self, request, *args, **kwargs):
-#         new_comment = None
-#         if self.request.method == 'POST':
-#             print("It's POST")
-#             comment_form = CreateCommentForm(data=self.request.POST)
-#
-#             if comment_form.is_valid():
-#                 new_comment = comment_form.save(commit=False)
-#                 new_comment.post = post
-#                 new_comment.user = user
-#                 new_comment.save()
-#                 # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-#             return HttpResponseRedirect(reverse_lazy("feed"))
-#
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         user = self.request.user
-#
-#         for post in context['object_list']:
-#             post.liked = Like.objects.filter(user=user, post=post).exists()
-#             post.comments = Comment.objects.filter(post=post)
-#             post.comment_form = CreateCommentForm()
-#
-#         return context
 
 
 @login_required
@@ -153,14 +122,35 @@ def feed_post_view(request):
 
 
 
+def like_unlike_view(request, **kwargs):
+    if request.method == 'POST':
+        post_id = request.POST.get('post_id')
+        post = Post.objects.get(id=post_id)
+        user = UserProfile.objects.get(user=request.user)
+
+        if Like.objects.filter(user=user, post=post).exists():
+            like = Like.objects.get(post=post, user=user)
+            like.delete()
+            value = 'unlike'
+        else:
+            like = Like(user=user, post=post)
+            like.save()
+            value = 'like'
+
+        data = {'like_count':post.liked_post.count(), 'value':value}
+
+        return JsonResponse(data, safe=False)
+    return redirect("feed")
+
+
+
 @login_required
 def like_post_view(request, *args, **kwargs):
-
     post = Post.objects.get(pk=kwargs['pk'])
     user = UserProfile.objects.get(user=request.user)
-
     like = Like(user=user, post=post)
     like.save()
+    like_count = post.liked_post.count()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -168,10 +158,8 @@ def like_post_view(request, *args, **kwargs):
 
 @login_required
 def unlike_post_view(request, *args, **kwargs):
-
     user = UserProfile.objects.get(user=request.user)
     post = Post.objects.get(pk=kwargs['pk'])
-
     like = Like.objects.get(post=post, user=user)
     like.delete()
 

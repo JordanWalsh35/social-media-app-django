@@ -1,4 +1,5 @@
 from django.contrib.auth import password_validation
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm, UserChangeForm, PasswordChangeForm
 from django import forms
 from .models import UserProfile
@@ -19,17 +20,26 @@ class NewUserForm(UserCreationForm):
         model = UserProfile
         fields = ("email", "username" , "password1", "password2",)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
 
-class UpdateAccountForm(UserChangeForm):
+class UpdateAccountForm(forms.ModelForm): #UserChangeForm
+    username = forms.CharField(label="", widget = forms.TextInput(attrs={'class':'input-boxes', 'placeholder':'Username'}))
+    first_name = forms.CharField(label="", widget = forms.TextInput(attrs={'class':'input-boxes', 'placeholder':'First name'}))
+    last_name = forms.CharField(label="", widget = forms.TextInput(attrs={'class':'input-boxes', 'placeholder':'Last name'}))
+    # password1 = forms.CharField(label="", strip=False, widget=forms.PasswordInput(attrs={'class':'input-boxes', 'placeholder':'Password'}),)
+    # profile_picture = forms.ImageField(label="", widget = forms.ClearableFileInput(attrs={'class':'upload-file'}))
+
+
     class Meta:
-        fields = '__all__'
+        fields =  ("username", "first_name", "last_name", "email", "bio", "profile_picture",)
         model = UserProfile
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+
+# class UpdateProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = UserProfile
+#         fields = ["bio"]
 
 
 class ChangePasswordForm(PasswordChangeForm):

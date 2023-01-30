@@ -18,9 +18,11 @@ def home_view(request):
 
 
 def view_notifications(request):
-    view_notifications = Notification.objects.filter(profile=request.user)
-    context = {'view_notifications' : view_notifications}
-    return render(request, "notifications.html", context)
+    if request.user.is_authenticated:
+        view_notifications = Notification.objects.filter(profile=request.user)
+        context = {'view_notifications' : view_notifications}
+        return render(request, "notifications.html", context)
+    return HttpResponseRedirect(reverse("accounts:login"))
 
 
 

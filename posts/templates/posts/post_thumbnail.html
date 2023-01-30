@@ -2,10 +2,9 @@
 
 <div class="post-thumbnail">
   <a href="#">
-    <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="320" height="320">
+    <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="335" height="335">
   </a>
 </div>
-<!-- data-post-pk="{{post.pk}}" -->
 
 
 <div id="postModal{{post.pk}}" class="modal fade" tabindex="-1">
@@ -26,9 +25,11 @@
             <div class="header-right">
               <p><b id="modal-username">{{post.user.username}}</b>
                 {% if connected %}
-                  <span style="font-size:18px;">&nbsp; &#8226; Following </span>
+                    <span style="font-size:18px;">&nbsp; &#8226; Following </span>
                 {% elif user.username != request.user.username %}
-                  <a href="{% url 'accounts:follow' username %}">Follow</a>
+                    <button style="background-color:#3897f0;padding:4px 7px 4px 7px;" class="btn custom-button">
+                        <a style="color:white;" href="{% url 'accounts:follow' username %}">Follow</a>
+                    </button>
                 {% endif %}
               </p>
             </div>
@@ -36,26 +37,32 @@
 
           <div class="modal-comments">
             <div class="container">
-              {% if post.liked %}
-                   <a id="modal-liked" href="{% url 'posts:unlike' post.pk %}">Unlike</a>
-              {% else %}
-                  <a href="{% url 'posts:like' post.pk %}">Like</a>
-              {% endif %}
-
-
-
-              <p><b>{{post.liked_post.count}} likes</b></p>
 
               <p><b>{{post.user.username}}</b> {{post.caption}}</p>
 
               {% for comment in post.comments.all %}
-                <p>{{comment.user.username}}</p>
-                <p>{{comment.comment}}</p>
+                <p><b>{{comment.user.username}}</b> {{comment.comment}}</p>
               {% endfor %}
 
-              <p>{{post.time_created}}</p>
-
             </div>
+          </div>
+
+          <div class="modal-likes">
+            <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="post_id" value="{{post.id}}">
+                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
+                    {% if post.liked %}
+                        <img src="{% static 'images/heart-full.png' %}" height="35" width="35">
+                    {% else %}
+                        <img src="{% static 'images/heart-empty.png' %}" height="35" width="35">
+                    {% endif %}
+                </button>
+            </form>
+            <div class="like-count{{post.id}}">
+                <b>{{post.liked_post.count}} likes</b>
+            </div>
+            <p>{{post.time_created}}</p>
           </div>
 
           <div class="modal-addcomment">
@@ -65,9 +72,10 @@
                   {{post.comment_form}}
               </div>
               <div class="comment-right">
-                  <input type="submit" value="Post" class="comment-button"><br><br>
+                  <input type="submit" value="Post" class="comment-button">
               </div>
             </form>
+
           </div>
         </div>
    </div>

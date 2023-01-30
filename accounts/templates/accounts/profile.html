@@ -23,26 +23,38 @@
 
         <div class="container-right col-md-8">
               <div class="head-section">
-                <h2 style="font-size:30px;">{{user.username}}</h2>
-                <div class="follow-edit">
-                    {% if user.username == request.user.username %}
-                      <li><a href="{% url 'accounts:update' user %}">Edit Profile</a></li>
-                    {% elif connected %}
-                      <li><a href="{% url 'accounts:unfollow' username %}">Unfollow</a></li>
-                    {% else %}
-                      <li><a href="{% url 'accounts:follow' username %}">Follow</a></li>
-                    {% endif %}
+                <ul>
+                    <li style="font-size:29px;padding-top:10px;">{{user.username}}</li>
+                    <li style="padding-bottom:10px;">
+                        {% if user.username == request.user.username %}
+                            <button class="btn custom-button">
+                                <a style="color:black;" href="{% url 'accounts:update' user %}">Edit Profile</a>
+                            </button>
+                        {% elif connected %}
+                            <button class="btn custom-button">
+                                <a style="color:black;" href="{% url 'accounts:unfollow' username %}">Unfollow</a>
+                            </button>
+                        {% else %}
+                            <button style="background-color:#3897f0;padding:4px 10px 4px 10px;" class="btn custom-button">
+                                <a style="color:white;" href="{% url 'accounts:follow' username %}">Follow</a>
+                            </button>
+                        {% endif %}
+                    </li>
+                </ul>
                 </div>
-              </div>
+
 
               <div class="profile-attrs">
-                <ul>
-                  <li><a href="#">{{ user.posts.count }} posts</a></li>
-                  <li><a href="#">{{ user.followers.count }} followers</a></li>
-                  <li><a href="#">{{ user.following.count }} following</a></li>
+                <ul class="attr-links">
+                  <li><a style="color:black;" href="#"><b>{{ user.posts.count }}</b> posts</a></li>
+                  <li><a style="color:black;" href="{% url 'accounts:followers' username %}"><b>{{ user.followers.count }}</b> followers</a></li>
+                  <li><a style="color:black;" href="{% url 'accounts:following' username %}"><b>{{ user.following.count }}</b> following</a></li>
+                </ul><br>
+                <ul class="other-attrs">
+                    <li>{{user.first_name}} {{user.last_name}}</li>
+                    <li>{{user.bio}}</li>
                 </ul>
               </div>
-
         </div>
       </div>
 
@@ -50,17 +62,10 @@
     <div class="profile-posts">
       <ul>
           {% for post in posts %}
-            <li class="lists">{% include "posts/post_thumbnail.html" %}</li>
+            <li>{% include "posts/post_thumbnail.html" %}</li>
           {% endfor %}
       </ul>
     </div>
   </div>
-
-
-    {% if request.user.username == user.username %}
-      <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
-    {% endif %}
-
-
-
+<script src="{% static 'js/like.js' %}"></script>
 {% endblock %}

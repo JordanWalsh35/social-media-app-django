@@ -2,6 +2,9 @@ from django import forms
 from .models import Post, Comment
 
 class CreatePostForm(forms.ModelForm):
+    photo = forms.FileField(label="", widget = forms.ClearableFileInput(attrs={'class':'upload-file'}))
+    caption = forms.CharField(label="", widget = forms.Textarea(attrs={'class':'caption-input', 'placeholder':'Caption'}))
+
     class Meta:
         model = Post
         fields = ("photo", "caption")

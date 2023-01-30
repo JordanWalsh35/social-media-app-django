@@ -17,11 +17,9 @@
       <div class="login-container">
         <form method="POST">
           {% csrf_token %}
-          <div class="">
             <a class="logo" href="#">jordiigram</a><br><br>
             {{form.as_p}}
             <input type="submit" value="Sign up" class="btn btn-primary btn-large"><br><br>
-          </div>
         </form>
       </div>
       <div class="signup-container">

@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 from posts.models import Post, Like, Comment
-from .forms import LoginForm, NewUserForm
+from .forms import LoginForm, NewUserForm, UpdateAccountForm#, UpdateProfileForm
 from posts.forms import CreateCommentForm
 from .models import UserProfile
 
@@ -21,8 +21,10 @@ class MyLoginView(LoginView):
     form_class = LoginForm
 
 
+
 class MyLogoutView(LogoutView):
     next_page = "home"
+
 
 
 class SignUpView(CreateView):
@@ -30,9 +32,6 @@ class SignUpView(CreateView):
     success_url = reverse_lazy("accounts:login")
     template_name = "accounts/signup.html"
 
-
-class UpdateProfileView(LoginRequiredMixin, TemplateView):
-    template_name = "accounts/update_account.html"
 
 
 class FollowersView(LoginRequiredMixin, ListView):
@@ -45,6 +44,7 @@ class FollowersView(LoginRequiredMixin, ListView):
         return obj
 
 
+
 class FollowingView(LoginRequiredMixin, ListView):
     template_name = "accounts/following.html"
     model = UserProfile
@@ -53,6 +53,7 @@ class FollowingView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         obj = get_object_or_404(UserProfile, username = self.kwargs.get('username'))
         return obj
+
 
 
 @login_required
@@ -89,6 +90,25 @@ def user_profile_view(request, username):
 
 
 @login_required
+def update_profile_view(request, username):
+    user = UserProfile.objects.get(username=username)
+
+    if request.method == 'POST':
+        user_form = UpdateAccountForm(request.POST, request.FILES, instance=request.user.userprofile)
+        if user_form.is_valid():
+            user_form.save()
+            new_username = request.POST['username']
+            return HttpResponseRedirect(reverse_lazy("accounts:profile", kwargs={'username':new_username}))
+    else:
+        user_form = UpdateAccountForm(instance=request.user)
+
+    context = {'user_form':user_form}
+
+    return render(request, "accounts/update_account.html", context)
+
+
+
+@login_required
 def follow_view(request, username):
     user = UserProfile.objects.get(username=username)
     active_user = UserProfile.objects.get(user=request.user)
@@ -99,7 +119,7 @@ def follow_view(request, username):
     except Exception:
         messages.warning("System Error: Please Try Again")
 
-    return HttpResponseRedirect(reverse_lazy("accounts:profile", kwargs={'username':user}))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 
@@ -114,7 +134,8 @@ def unfollow_view(request, username):
     except Exception:
         messages.warning("System Error: Please Try Again")
 
-    return HttpResponseRedirect(reverse_lazy("accounts:profile", kwargs={'username':user}))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 
 def user_search(request):

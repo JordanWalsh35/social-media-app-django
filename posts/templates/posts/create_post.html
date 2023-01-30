@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container">
-  <form method="post" enctype="multipart/form-data">
+<div class="form-container">
+  <p style="font-size:20px;padding-top:10px;">Choose your upload file and add a caption below to add a new post to your profile!</p>
+  <form style="padding-top:30px;" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Create post" class="btn btn-primary btn-large form-inputs"><br><br>
