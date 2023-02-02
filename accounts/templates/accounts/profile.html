@@ -35,7 +35,7 @@
                                 <a style="color:black;" href="{% url 'accounts:unfollow' username %}">Unfollow</a>
                             </button>
                         {% else %}
-                            <button style="background-color:#3897f0;padding:4px 10px 4px 10px;" class="btn custom-button">
+                            <button style="background-color:#3897f0;" class="btn custom-button">
                                 <a style="color:white;" href="{% url 'accounts:follow' username %}">Follow</a>
                             </button>
                         {% endif %}
@@ -58,14 +58,17 @@
         </div>
       </div>
 
-
-    <div class="profile-posts">
-      <ul>
-          {% for post in posts %}
-            <li>{% include "posts/post_thumbnail.html" %}</li>
-          {% endfor %}
-      </ul>
-    </div>
+      <div class="profile-posts">
+          <ul class="profile-posts-list">
+            {% for post in posts %}
+                <li>{% include "posts/modal.html" %}</li>
+            {% endfor %}
+          </ul>
+      </div>
   </div>
-<script src="{% static 'js/like.js' %}"></script>
+
+  <script src="{% static 'js/like.js' %}"></script>
+  <script src="{% static 'js/feed_options.js' %}"></script>
+  <script src="{% static 'js/share_link.js' %}"></script>
+
 {% endblock %}

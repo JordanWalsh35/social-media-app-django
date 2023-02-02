@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="heading-container">
+    <p class="headings">Edit Post</p>
+</div>
+<div class="form-container">
+  <p style="font-size:20px;padding-top:10px;">Enter a new caption below to edit your post.</p>
+  <form style="padding-top:30px;" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{edit_form.as_p}}
+    <input type="submit" value="Submit" class="btn btn-primary btn-large form-inputs"><br><br>
+  </form>
+</div>
+
+{% endblock %}

@@ -3,25 +3,37 @@
 
 {% block content %}
 
+<div class="heading-container">
+    <p class="headings">Followers</p>
+    <p style="sub-headings">Here's a list of people who follow you.</p>
+</div>
 <div class="follower-container">
     {% for profile in user.followers.all %}
       <div class="follower">
-          <div class="follow-profiler">
+          <div class="follow-profiler-container">
               {% if profile.profile_picture %}
-                <img class="post-profiler" src="{{profile.profile_picture.url}}" alt="profile_picture">
+                <img class="follow-profiler" src="{{profile.profile_picture.url}}" alt="profile_picture">
               {% else %}
-                <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+                <img class="follow-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
               {% endif %}
           </div>
           <div class="follow-username">
-              <a href="{% url 'accounts:profile' profile.username %}">{{profile.username}}</a>
+            <ul style="padding-left:0px">
+              <li><a style="font-size:25px;color:black" href="{% url 'accounts:profile' profile.username %}">{{profile.username}}</a></li>
+              <li style="font-size:13px">{{profile.first_name}} {{profile.last_name}}</li>
+              <li style="font-size:13px">{{profile.bio}}</li>
+            </ul>
           </div>
           <div class="follow-button">
             {% if profile.username != request.user.username %}
                 {% if user in profile.followers.all %}
-                    <p>Following</p>
+                    <button class="btn custom-button">
+                        <a style="color:black;" href="{% url 'accounts:unfollow' profile.username %}">Unfollow</a>
+                    </button>
                 {% else %}
-                    <a href="{% url 'accounts:follow' profile.username %}">Follow</a>
+                    <button style="background-color:#3897f0;" class="btn custom-button">
+                        <a style="color:white;" href="{% url 'accounts:follow' profile.username %}">Follow</a>
+                    </button>
                 {% endif %}
             {% endif %}
           </div>

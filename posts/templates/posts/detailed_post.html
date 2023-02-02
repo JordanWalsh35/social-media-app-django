@@ -12,23 +12,33 @@
             <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
           {% endif %}
           <a class="post-username" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}}</b></a>
+          <div class="post-options dropdown">
+              <img id="options-image" class="dropdown-toggle" style="width:45px;height:45px;cursor:pointer;" src="{% static 'images/ellipsis2.png' %}" alt="">
+              <div class="dropdown-menu" id="dropdown-options">
+                {% if request.user.username == post.user.username %}
+                    <li><a href="{% url 'posts:edit' post.pk %}">Edit Post</a></li>
+                    <li><a href="{% url 'posts:delete' post.pk %}">Delete Post</a></li>
+                {% else %}
+                    <li><a class="share-link" data-url="www.jordiigram.com{{post.get_absolute_url}}" href="#">Share Link</a></li>
+                    <li><a href="{% url 'posts:report' post.pk %}">Report</a></li>
+                {% endif %}
+              </div>
+                <script src="{% static 'js/post_options.js' %}"></script>
+          </div>
         </div>
 
         <img src="{{MEDIA_URL}}{{post.photo.url}}" alt="{{post.caption}}" width="100%" height="100%">
 
         <div class="post-footer">
-          <div class="post-comments">
-            <div class="like-count{{post.id}}">
-                <b>{{post.liked_post.count}} likes</b>
+            <div class="post-caption">
+                <p><a class="comment-username" href="{% url 'accounts:profile' post.user.username %}"><b style="font-size:16px;">{{post.user.username}} </b></a> <i>{{post.caption}}</i></p>
             </div>
 
-            <p><b>{{post.user.username}}</b> {{post.caption}}</p>
-
-            {% for comment in comments.all %}
-              <p><b>{{comment.user.username}}</b> {{comment.comment}}</p>
-            {% endfor %}
-
-          </div>
+            <div class="post-comments">
+              {% for comment in comments.all %}
+                <p><a class="comment-username" href="{% url 'accounts:profile' comment.user.username %}"><b>{{comment.user.username}}</b></a> {{comment.comment}}</p>
+              {% endfor %}
+            </div>
 
           <div class="post-likes">
             <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
@@ -42,6 +52,10 @@
                     {% endif %}
                 </button>
             </form>
+
+            <div class="like-count{{post.id}}">
+                <a style="color:black;" href="{% url 'posts:likes' post.pk %}"><b>{{post.liked_post.count}} likes</b></a>
+            </div>
 
             <p>{{post.time_created}}</p>
           </div>
@@ -60,6 +74,7 @@
 
         </div>
 <script src="{% static 'js/like.js' %}"></script>
+<script src="{% static 'js/share_link.js' %}"></script>
 </div>
 
 {% endblock %}

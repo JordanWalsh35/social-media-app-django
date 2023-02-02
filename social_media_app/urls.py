@@ -10,6 +10,7 @@ from posts import views as post_views
 urlpatterns = [
     path("", views.home_view, name="home"),
     path("feed/", post_views.feed_post_view, name="feed"),
+    path("new-user/", views.new_user_view, name="new-user"),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("posts/", include("posts.urls", namespace="posts")),

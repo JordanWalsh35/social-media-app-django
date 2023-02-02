@@ -1,14 +1,14 @@
 .feed-container {
   position: relative;
   background-color: white;
-  /* box-shadow: 0px 2px 5px #888888; */
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 40px 15% 40px 15%;
 }
 
 
 .post-header {
-  padding: 10px 0 10px 15px;
+  position: relative;
+  padding: 15px 0 15px 15px;
 }
 
 
@@ -27,20 +27,39 @@
 }
 
 
+.post-options {
+  position: absolute;
+  inset: 0 0 0 90%;
+  display: grid;
+  place-items: center;
+}
+
+
 .post-footer {
   position: relative;
 }
 
 
+.post-caption {
+  padding: 15px 15px 5px 20px;
+  font-size: 14px;
+}
+
+
 .post-comments {
-  padding: 20px;
+  padding: 5px 20px 5px 20px;
+}
+
+
+.comment-username {
+  color: black;
 }
 
 
 .post-likes {
   height: 80px;
-  padding: 10px 0 10px 20px;
-  margin-bottom: 10;
+  padding: 10px 10px 10px 20px;
+  margin-bottom: 20px;
 }
 
 
@@ -67,4 +86,82 @@
 .custom-like {
   background-color: white;
   border: None;
+  padding-left: 0px;
+}
+
+
+.form-container {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  align-items: center;
+  padding: 40px;
+}
+
+
+.upload-file {
+  background-color: white;
+  width: 325px;
+  padding-left: 70px;
+}
+
+
+.caption-input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height: 100px;
+  padding-left: 10px;
+  width: 100%;
+}
+
+
+.delete-container {
+  width: 400px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 35px;
+}
+
+
+
+#delete-button {
+  margin: 5px;
+  height: 35px;
+  font-size: 17px;
+  padding: 0 18px 0 18px;
+  display: inline-block;
+}
+
+
+#cancel-button {
+  height: 35px;
+  margin: 5px;
+  font-size: 17px;
+  padding: 0 7px 0 7px;
+  display: inline-block;
+}
+
+
+.share-modal-container {
+  position: relative;
+  height: 35%;
+  width: 35%;
+  background-color: white;
+  margin: 5% auto auto auto;
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+  padding: 20px;
 }

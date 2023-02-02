@@ -1,5 +1,6 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, AbuseReport
+
 
 class CreatePostForm(forms.ModelForm):
     photo = forms.FileField(label="", widget = forms.ClearableFileInput(attrs={'class':'upload-file'}))
@@ -9,17 +10,15 @@ class CreatePostForm(forms.ModelForm):
         model = Post
         fields = ("photo", "caption")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
 
 class UpdatePostForm(forms.ModelForm):
+    caption = forms.CharField(label="", widget = forms.Textarea(attrs={'class':'caption-input', 'placeholder':'Caption'}))
+
     class Meta:
         model = Post
         fields = ("caption",)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
 
 class CreateCommentForm(forms.ModelForm):
@@ -29,5 +28,10 @@ class CreateCommentForm(forms.ModelForm):
         model = Comment
         fields = ("comment",)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+class ReportForm(forms.ModelForm):
+    report = forms.CharField(label="", widget = forms.TextInput(attrs={'class':'caption-input', 'placeholder':'Write a complaint about this post...'}))
+
+    class Meta:
+        model = AbuseReport
+        fields = ("report",)

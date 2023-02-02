@@ -3,18 +3,26 @@
 
 {% block content %}
 
+<div class="heading-container">
+    <p class="headings">Following</p>
+    <p style="sub-headings">Here's a list of people that you're following.</p>
+</div>
 <div class="follower-container">
     {% for profile in user.following.all %}
       <div class="follower">
-          <div class="follow-profiler">
+          <div class="follow-profiler-container">
               {% if profile.profile_picture %}
-                <img class="post-profiler" src="{{profile.profile_picture.url}}" alt="profile_picture">
+                <img class="follow-profiler" src="{{profile.profile_picture.url}}" alt="profile_picture">
               {% else %}
-                <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+                <img class="follow-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
               {% endif %}
           </div>
           <div class="follow-username">
-              <a href="{% url 'accounts:profile' profile.username %}">{{profile.username}}</a>
+            <ul style="padding-left:0px">
+              <li><a style="font-size:25px;color:black" href="{% url 'accounts:profile' profile.username %}">{{profile.username}}</a></li>
+              <li style="font-size:13px">{{profile.first_name}} {{profile.last_name}}</li>
+              <li style="font-size:13px">{{profile.bio}}</li>
+            </ul>
           </div>
           <div class="follow-button">
             {% if profile.username != request.user.username %}

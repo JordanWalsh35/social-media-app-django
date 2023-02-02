@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="heading-container">
+    <p class="headings">Welcome</p>
+    <p class="sub-headings">You aren't following anybody yet, see some suggestions below or use the search bar above to find profiles to follow!</p>
+</div>
+
+
+<div class="follower-container">
+    {% for user in all_users %}
+      {% if user != new_user %}
+          <div class="follower">
+              <div class="follow-profiler-container">
+                  {% if user.profile_picture %}
+                    <img class="follow-profiler" src="{{user.profile_picture.url}}" alt="profile_picture">
+                  {% else %}
+                    <img class="follow-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+                  {% endif %}
+              </div>
+              <div class="follow-username">
+                <ul style="padding-left:0px">
+                  <li><a style="font-size:25px;color:black" href="{% url 'accounts:profile' user.username %}">{{user.username}}</a></li>
+                  <li style="font-size:13px">{{user.first_name}} {{user.last_name}}</li>
+                  <li style="font-size:13px">{{user.bio}}</li>
+                </ul>
+              </div>
+              <div class="follow-button">
+                {% if new_user in user.followers.all %}
+                <button class="btn custom-button">
+                    <a style="color:black;">Following</a>
+                </button>
+                {% else %}
+                <button style="background-color:#3897f0;" class="btn custom-button">
+                    <a style="color:white;" href="{% url 'accounts:follow' user.username %}">Follow</a>
+                </button>
+                {% endif %}
+              </div>
+          </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="form-container">
+  <p style="font-size:20px;padding-top:10px;">Enter your complaint below to report abuse for this post</p>
+  <form style="padding-top:30px;" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit" class="btn btn-primary btn-large form-inputs"><br><br>
+  </form>
+</div>
+
+{% endblock %}

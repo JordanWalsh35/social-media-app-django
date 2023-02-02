@@ -1,9 +1,9 @@
 {% load static %}
 
 <div class="post-thumbnail">
-  <a href="#">
-    <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="335" height="335">
-  </a>
+    <a href="#">
+      <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="335" height="335">
+    </a>
 </div>
 
 
@@ -22,26 +22,44 @@
                 <img class="profiler-small" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
               {% endif %}
             </div>
-            <div class="header-right">
-              <p><b id="modal-username">{{post.user.username}}</b>
+
+              <div class="modal-username-container">
+                  <b style="font-size:19px;">{{post.user.username}}</b>
+              </div>
+
+              <div class="modal-follow">
                 {% if connected %}
-                    <span style="font-size:18px;">&nbsp; &#8226; Following </span>
+                  <span style="font-size:18px;">&nbsp; &#8226; Following </span>
                 {% elif user.username != request.user.username %}
-                    <button style="background-color:#3897f0;padding:4px 7px 4px 7px;" class="btn custom-button">
+                      <button style="background-color:#3897f0;padding:4px 7px 4px 7px;width:70px;" class="btn custom-button">
                         <a style="color:white;" href="{% url 'accounts:follow' username %}">Follow</a>
-                    </button>
+                      </button>
                 {% endif %}
-              </p>
-            </div>
+              </div>
+
+              <div class="modal-options">
+                  <img id="{{post.id}}" class="options-image" style="width:45px;height:45px;cursor:pointer;" src="{% static 'images/ellipsis2.png' %}" alt="">
+                  <div class="dropdown-menu post-dropdown-options" id="post-dropdown-options-{{post.id}}">
+                    <ul class="modal-lists">
+                      {% if request.user.username == post.user.username %}
+                          <li><a href="{% url 'posts:edit' post.pk %}">Edit Post</a></li>
+                          <li><a href="{% url 'posts:delete' post.pk %}">Delete Post</a></li>
+                      {% else %}
+                          <li><a class="share-link" data-url="www.jordiigram.com{{post.get_absolute_url}}" href="#">Share Link</a></li><br>
+                          <li><a href="{% url 'posts:report' post.pk %}">Report</a></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+              </div>
+
           </div>
 
           <div class="modal-comments">
             <div class="container">
-
-              <p><b>{{post.user.username}}</b> {{post.caption}}</p>
+              <p><a class="comment-username" href="{% url 'accounts:profile' post.user.username %}"><b style="font-size:17px;">{{post.user.username}} </b></a> <i>{{post.caption}}</i></p>
 
               {% for comment in post.comments.all %}
-                <p><b>{{comment.user.username}}</b> {{comment.comment}}</p>
+                <p><a class="comment-username" href="{% url 'accounts:profile' comment.user.username %}"><b>{{comment.user.username}}</b></a> {{comment.comment}}</p>
               {% endfor %}
 
             </div>
@@ -60,7 +78,7 @@
                 </button>
             </form>
             <div class="like-count{{post.id}}">
-                <b>{{post.liked_post.count}} likes</b>
+                <a style="color:black;" href="{% url 'posts:likes' post.pk %}"><b>{{post.liked_post.count}} likes</b></a>
             </div>
             <p>{{post.time_created}}</p>
           </div>

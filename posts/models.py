@@ -17,7 +17,7 @@ class Post(models.Model):
         return str(self.pk)
 
     def get_absolute_url(self):
-        return reverse("posts:detailed", kwargs={"username": self.user.username, "pk": self.pk})
+        return reverse("posts:detailed", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ["-time_created"]
@@ -52,13 +52,19 @@ class Like(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="sender")
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="receiver")
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
     liked = models.BooleanField(default=False, null=True)
     followed = models.BooleanField(default=False, null=True)
-    time_created = models.DateTimeField(null=True, blank=True)
+    time_created = models.DateTimeField(auto_now_add=True, null=True)
 
     options=(("Unread", "Unread"),
              ("Read", "Read"),)
 
     read_status = models.CharField(max_length=10, choices=options, default="Unread")
+
+
+class AbuseReport(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="reporter")
+    report = models.TextField(max_length=300, blank=False)

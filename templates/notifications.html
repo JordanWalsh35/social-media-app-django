@@ -3,25 +3,31 @@
 
 {% block content %}
 
+<div class="heading-container">
+    <p class="headings">Notifications</p>
+</div>
 <div class="notifications-container">
   {% for notification in view_notifications %}
         <div class="notification">
           <a href="{% url 'status' notification.pk %}">
               <div class="notification-profiler">
                 {% if notification.user.profile_picture %}
-                  <img class="post-profiler" src="{{notification.user.profile_picture.url}}" alt="profile_picture">
+                  <img class="follow-profiler" src="{{notification.user.profile_picture.url}}" alt="profile_picture">
                 {% else %}
-                  <img class="post-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+                  <img class="follow-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
                 {% endif %}
               </div>
               <div class="notification-message">
-                {% if notification.followed %}
-                    {{notification.user}} just followed you.
-                {% elif notification.liked %}
-                    {{notification.user}} liked your post.
-                {% else %}
-                    {{notification.user}} commented on your post.
-                {% endif %}
+                <ul style="padding-left:0px">
+                  {% if notification.followed %}
+                      <li>{{notification.user}} just followed you.</li>
+                  {% elif notification.liked %}
+                      <li>{{notification.user}} liked your post.</li>
+                  {% else %}
+                      <li>{{notification.user}} commented on your post.</li>
+                  {% endif %}
+                  <li style="font-size:13px;color:grey;">{{notification.time_created}}</li>
+                </ul>
               </div>
                 <div class="notification-status">
                     <p>{{notification.read_status}}</p>

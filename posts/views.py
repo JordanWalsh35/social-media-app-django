@@ -10,7 +10,7 @@ from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from django.http import JsonResponse
 
-from .forms import CreatePostForm, UpdatePostForm, CreateCommentForm
+from .forms import CreatePostForm, UpdatePostForm, CreateCommentForm, ReportForm
 from .models import Post, Like, Comment
 from accounts.models import UserProfile
 
@@ -29,36 +29,45 @@ class CreatePostView(LoginRequiredMixin, generic.CreateView):
 
 
 
-class UpdatePostView(LoginRequiredMixin, generic.UpdateView):
-    form_valid_message = "Your post has been updated."
-    form_class = UpdatePostForm
-    template_name = "posts/create_post.html"
-
-    def get(self, request, *args, **kwargs):
-        post = models.Post.objects.get(pk=kwargs['pk'])
-
-        if post.user != request.user:
-            messages.warning(request, "You don't have permission to update this post.")
-            return HttpResponseRedirect(reverse_lazy('posts:detailed', kwargs={'pk':kwargs['pk']}))
-        else:
-            return super().get(request, *args, **kwargs)
-
-
-
 class DeletePostView(LoginRequiredMixin, generic.DeleteView):
     model = Post
-    form_valid_message = "Your post has been deleted."
-    success_url = reverse_lazy("home")
-    template_name = "posts/delete_post.html"
+    success_url = reverse_lazy('home')
+    template_name = 'posts/delete_post.html'
 
     def get(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs['pk'])
+        return super().get(request, *args, **kwargs)
 
-        if post.user != request.user:
-            messages.warning(request, "You don't have permission to delete this post.")
-            return HttpResponseRedirect(reverse_lazy('posts:detailed', kwargs={'pk':kwargs['pk']}))
-        else:
-            return super().get(request, *args, **kwargs)
+
+
+class ReportAbuseView(LoginRequiredMixin, generic.CreateView):
+    form_class = ReportForm
+    template_name = "posts/report_post.html"
+
+    def get_success_url(self):
+        return reverse("home")
+
+    def form_valid(self, form):
+        form.instance.post = Post.objects.get(pk=self.kwargs.get('pk'))
+        form.instance.user = UserProfile.objects.get(username=self.request.user)
+        form.save()
+        return super().form_valid(form)
+
+
+@login_required
+def update_post_view(request, **kwargs):
+    post = Post.objects.get(pk=kwargs['pk'])
+
+    if request.method == 'POST':
+        edit_form = UpdatePostForm(data=request.POST, instance=post)
+        if edit_form.is_valid():
+            edit_form.save()
+        return HttpResponseRedirect(reverse_lazy("posts:detailed", kwargs={'pk':kwargs['pk']}))
+    else:
+        edit_form = UpdatePostForm()
+
+    context = {'edit_form':edit_form}
+    return render(request, "posts/edit_post.html", context)
 
 
 
@@ -144,23 +153,10 @@ def like_unlike_view(request, **kwargs):
 
 
 
-@login_required
-def like_post_view(request, *args, **kwargs):
-    post = Post.objects.get(pk=kwargs['pk'])
+def post_likes(request, pk):
     user = UserProfile.objects.get(user=request.user)
-    like = Like(user=user, post=post)
-    like.save()
-    like_count = post.liked_post.count()
+    post = Post.objects.get(pk=pk)
+    likes = Like.objects.filter(post=post)
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-
-@login_required
-def unlike_post_view(request, *args, **kwargs):
-    user = UserProfile.objects.get(user=request.user)
-    post = Post.objects.get(pk=kwargs['pk'])
-    like = Like.objects.get(post=post, user=user)
-    like.delete()
-
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    context = {'post':post, 'likes':likes, 'user':user}
+    return render(request, "posts/post_likes.html", context)

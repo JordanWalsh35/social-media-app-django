@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="heading-container">
+    <p class="headings">Post Likes</p>
+    <p style="sub-headings">Anybody who has liked this post.</p>
+</div>
+<div class="follower-container">
+    {% for like in likes %}
+      <div class="follower">
+          <div class="follow-profiler-container">
+              {% if like.user.profile_picture %}
+                <img class="follow-profiler" src="{{like.user.profile_picture.url}}" alt="profile_picture">
+              {% else %}
+                <img class="follow-profiler" src="{% static 'images/profile_placeholder.jpg' %}" alt="default_photo">
+              {% endif %}
+          </div>
+          <div class="follow-username">
+            <ul style="padding-left:0px">
+              <li><a style="font-size:25px;color:black" href="{% url 'accounts:profile' like.user.username %}">{{like.user.username}}</a></li>
+              <li style="font-size:13px">{{like.user.first_name}} {{like.user.last_name}}</li>
+              <li style="font-size:13px">{{like.user.bio}}</li>
+            </ul>
+          </div>
+          <div class="follow-button">
+            {% if like.user.username != request.user.username %}
+                {% if user in like.user.followers.all %}
+                    <button class="btn custom-button">
+                        <p style="color:black;">Following</p>
+                    </button>
+                {% else %}
+                    <button style="background-color:#3897f0;" class="btn custom-button">
+                        <a style="color:white;" href="{% url 'accounts:follow' like.user.username %}">Follow</a>
+                    </button>
+                {% endif %}
+            {% endif %}
+          </div>
+      </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

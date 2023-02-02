@@ -12,8 +12,21 @@ from accounts.models import UserProfile
 
 def home_view(request):
     if request.user.is_authenticated:
+        user = UserProfile.objects.get(user=request.user)
+        following = user.following.count()
+        if following == 0:
+            return HttpResponseRedirect(reverse("new-user"))
         return HttpResponseRedirect(reverse("feed"))
     return HttpResponseRedirect(reverse("accounts:login"))
+
+
+
+def new_user_view(request):
+    new_user = UserProfile.objects.get(user=request.user)
+    all_users = UserProfile.objects.all()
+
+    context = {'new_user':new_user, 'all_users':all_users}
+    return render(request, "accounts/new_user.html", context)
 
 
 
