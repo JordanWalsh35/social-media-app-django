@@ -19,8 +19,3 @@ def like_notification(sender, instance, created, **kwargs):
     if created:
         if instance.user != instance.post.user:
             Notification.objects.create(post=instance.post, user=instance.user, profile=instance.post.user, liked=True, time_created=instance.time_created)
-
-
-
-# @receiver():
-# def delete_pic_post_delete():

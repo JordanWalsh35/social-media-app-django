@@ -9,7 +9,6 @@ from posts.models import Notification, Post
 from accounts.models import UserProfile
 
 
-
 def home_view(request):
     if request.user.is_authenticated:
         user = UserProfile.objects.get(user=request.user)

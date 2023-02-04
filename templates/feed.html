@@ -4,8 +4,9 @@
 {% block content %}
 <div class="heading-container">
     <p class="headings">Welcome to your Feed</p>
-    <p style="sub-headings">Here you can browse through recent posts of profiles that you're following.</p>
+    <p class="sub-headings">Here you can browse through recent posts of profiles that you're following.</p>
 </div>
+
     {% for post in posts %}
     <div class="feed-container">
             <div class="post-header">
@@ -41,7 +42,7 @@
                 <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="post_id" value="{{post.id}}">
-                    <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
+                    <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like-button" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
                         {% if post.liked %}
                             <img src="{% static 'images/heart-full.png' %}" height="35" width="35">
                         {% else %}
@@ -70,8 +71,8 @@
               </div>
             </div>
     </div>
-
     {% endfor %}
+
 <script src="{% static 'js/like.js' %}"></script>
 <script src="{% static 'js/feed_options.js' %}"></script>
 <script src="{% static 'js/share_link.js' %}"></script>

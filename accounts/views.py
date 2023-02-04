@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 from posts.models import Post, Like, Comment
-from .forms import LoginForm, NewUserForm, UpdateAccountForm#, UpdateProfileForm
+from .forms import LoginForm, NewUserForm, UpdateAccountForm
 from posts.forms import CreateCommentForm
 from .models import UserProfile
 

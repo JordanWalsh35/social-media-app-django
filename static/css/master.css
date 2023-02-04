@@ -17,8 +17,8 @@ ul {
 }
 
 
-.logo{
-  padding-left: 50px;
+.logo {
+  padding-left: 25%;
   font-family: "billabong", sans-serif;
   font-size: 45px;
   position: relative;
@@ -38,7 +38,7 @@ ul {
 
 .search-container{
   padding-top: 16px;
-  margin-left: 90px;
+  margin-left: 5%;
   width: 200px;
 }
 
@@ -58,7 +58,7 @@ ul {
 
 .nav-list {
   display: inline-block;
-  padding: 15px 5px 5px 10px;
+  padding: 5% 0 0 4%;
 }
 
 
@@ -76,8 +76,8 @@ ul {
 .badge {
   position: absolute;
   padding: 4px 6px 4px 6px;
-  bottom: 37px;
-  left: 286px;
+  top: 17%;
+  right: -15%;
   font-size: 10px;
 }
 
@@ -96,7 +96,8 @@ ul {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
-  width: 600px;
+  width: 55%;
+  margin: 1% auto 4% auto
 }
 
 
@@ -113,7 +114,7 @@ ul {
 
 .notification-profiler {
   position: absolute;
-  inset: 0 80% 0 0;
+  inset: 0 77% 0 0;
   display: grid;
   place-items: center;
 }
@@ -121,7 +122,7 @@ ul {
 
 .notification-message {
   position: absolute;
-  inset: 0 15% 0 20%;
+  inset: 0 15% 0 23%;
   display: grid;
   align-items: center;
   justify-items: start;
@@ -139,12 +140,12 @@ ul {
 
 
 .follower-container {
+  margin-bottom: 20px;
+  width: 55%;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 20px;
-  width: 600px;
+  text-align: center;
 }
-
 
 
 .follower {
@@ -191,11 +192,11 @@ ul {
 }
 
 
-.heading-container{
+.heading-container {
   display: grid;
   place-items: center;
   padding-top: 35px;
-  width: 600px;
+  width: 45%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -209,6 +210,31 @@ ul {
 
 
 .sub-headings {
-  font-size: 20px;
-  font-family: 'billabong', sans-serif;
+  font-size: 13px;
+}
+
+
+@media (max-width: 1000px){
+  .logo {
+    padding-left: 10%;
+  }
+  .search-bar{
+    display: none;
+  }
+
+  .nav-list {
+    padding: 5% 0 0 2%;
+  }
+
+  .notifications-container {
+    width: 100%;
+  }
+
+  .follower-container {
+    width: 100%;
+  }
+
+  .heading-container {
+    width: 100%;
+  }
 }

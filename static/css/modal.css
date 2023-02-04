@@ -1,0 +1,197 @@
+.modal-container {
+  position: relative;
+  height: 80%;
+  width: 65%;
+  margin: 5% auto auto auto;
+}
+
+
+.modal-image {
+  position: absolute;
+  inset: 0 35% 0 0;
+  background-color: black;
+}
+
+
+.modal-image img {
+  margin: auto;
+  height: 100%;
+}
+
+
+.modal-right {
+  background-color: white;
+  position: absolute;
+  inset: 0 0 0 65%;
+}
+
+
+.modal-header {
+  position: absolute;
+  inset: 0 0 87% 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+.profiler-container {
+  position: absolute;
+  inset: 0 75% 0 0;
+  display: grid;
+  place-items: center;
+}
+
+
+.profiler-small {
+  height: 63px;
+  width: 63px;
+  border-radius: 100%;
+  box-shadow: 0px 0px 3px #888888;
+}
+
+
+.modal-username-container {
+  position: absolute;
+  inset: 0 50% 0 25%;
+  display: grid;
+  align-items: center;
+  justify-items: start;
+}
+
+
+#modal-username {
+  font-size: 19px;
+}
+
+
+.modal-follow {
+  position: absolute;
+  inset: 0 20% 0 50%;
+  display: grid;
+  align-items: center;
+  justify-items: start;
+}
+
+
+#follow-text {
+  font-size:18px;
+}
+
+
+.modal-options {
+  position: absolute;
+  inset: 0 0 0 80%;
+  display: grid;
+  place-items: center;
+}
+
+
+.options-image {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+}
+
+
+.post-dropdown-options ul.modal-lists li{
+  display: block;
+}
+
+
+.modal-comments {
+  position: absolute;
+  inset: 13% 0 25% 0;
+  padding: 3%;
+}
+
+
+.modal-likes {
+  position: absolute;
+  inset: 75% 0 8% 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 15px;
+}
+
+
+.modal-addcomment {
+  position: absolute;
+  inset: 92% 0 0 0;
+}
+
+
+.comment-box {
+  height: 100%;
+  width: 100%;
+  align-self: stretch;
+  border: None;
+  background-color: white;
+  padding-left: 15px;
+}
+
+
+.comment-left {
+  position: absolute;
+  inset: 0 20% 0 0;
+  display: flex;
+  align-items: stretch;
+}
+
+
+.comment-right {
+  position: absolute;
+  inset: 0 0 0 80%;
+}
+
+
+.comment-button {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  color: rgba(14, 192, 255, 0.7);
+  border: None;
+  font-size: 20px;
+}
+
+
+@media only screen and (max-width: 1000px) {
+  .modal-container {
+    position: relative;
+    width: 95%;
+    height: 65%;
+    margin: 25% auto auto auto;
+  }
+
+  .modal-username-container {
+    inset: 0 20% 0 30%;
+  }
+
+  .profiler-container {
+    inset: 0 70% 0 0;
+  }
+
+  .profiler-small {
+    width: 40px;
+    height: 40px;
+  }
+
+  #modal-username {
+    font-size: 14px;
+    padding-left: 5%;
+  }
+
+  .modal-follow {
+    display: none;
+  }
+
+  .options-image {
+    width: 30px;
+    height: 30px;
+  }
+
+  .modal-comments {
+    padding: 2px;
+  }
+
+  .comment-button {
+    font-size: 13px;
+  }
+}

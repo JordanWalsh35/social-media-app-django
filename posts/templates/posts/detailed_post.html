@@ -44,7 +44,7 @@
             <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="post_id" value="{{post.id}}">
-                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
+                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like-button" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
                     {% if liked %}
                         <img src="{% static 'images/heart-full.png' %}" height="35" width="35">
                     {% else %}

@@ -29,6 +29,7 @@ class CreateCommentForm(forms.ModelForm):
         fields = ("comment",)
 
 
+
 class ReportForm(forms.ModelForm):
     report = forms.CharField(label="", widget = forms.TextInput(attrs={'class':'caption-input', 'placeholder':'Write a complaint about this post...'}))
 

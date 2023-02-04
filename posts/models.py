@@ -68,3 +68,4 @@ class AbuseReport(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, related_name="reporter")
     report = models.TextField(max_length=300, blank=False)
+    time_created = models.DateTimeField(auto_now_add=True, null=True)

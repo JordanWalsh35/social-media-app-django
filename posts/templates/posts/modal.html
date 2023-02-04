@@ -1,11 +1,8 @@
 {% load static %}
 
-<div class="post-thumbnail">
     <a href="#">
-      <img class="thumbnail-view" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}" width="335" height="335">
+      <img class="thumbnail-image" src="{{MEDIA_URL}}{{post.photo.url}}" data-toggle="modal" data-target="#postModal{{post.pk}}" alt="{{post.caption}}">
     </a>
-</div>
-
 
 <div id="postModal{{post.pk}}" class="modal fade" tabindex="-1">
     <div class="modal-container">
@@ -24,12 +21,12 @@
             </div>
 
               <div class="modal-username-container">
-                  <b style="font-size:19px;">{{post.user.username}}</b>
+                  <b id="modal-username">{{post.user.username}}</b>
               </div>
 
               <div class="modal-follow">
                 {% if connected %}
-                  <span style="font-size:18px;">&nbsp; &#8226; Following </span>
+                  <span id="follow-text">&nbsp; &#8226; Following </span>
                 {% elif user.username != request.user.username %}
                       <button style="background-color:#3897f0;padding:4px 7px 4px 7px;width:70px;" class="btn custom-button">
                         <a style="color:white;" href="{% url 'accounts:follow' username %}">Follow</a>
@@ -38,7 +35,7 @@
               </div>
 
               <div class="modal-options">
-                  <img id="{{post.id}}" class="options-image" style="width:45px;height:45px;cursor:pointer;" src="{% static 'images/ellipsis2.png' %}" alt="">
+                  <img id="{{post.id}}" class="options-image" src="{% static 'images/ellipsis2.png' %}" alt="">
                   <div class="dropdown-menu post-dropdown-options" id="post-dropdown-options-{{post.id}}">
                     <ul class="modal-lists">
                       {% if request.user.username == post.user.username %}
@@ -56,10 +53,10 @@
 
           <div class="modal-comments">
             <div class="container">
-              <p><a class="comment-username" href="{% url 'accounts:profile' post.user.username %}"><b style="font-size:17px;">{{post.user.username}} </b></a> <i>{{post.caption}}</i></p>
+              <p><a class="comment-username small-comments" href="{% url 'accounts:profile' post.user.username %}"><b>{{post.user.username}} </b></a> <i class="small-comments">{{post.caption}}</i></p>
 
               {% for comment in post.comments.all %}
-                <p><a class="comment-username" href="{% url 'accounts:profile' comment.user.username %}"><b>{{comment.user.username}}</b></a> {{comment.comment}}</p>
+                <p class="small-comments"><a class="comment-username" href="{% url 'accounts:profile' comment.user.username %}"><b>{{comment.user.username}}</b></a> {{comment.comment}}</p>
               {% endfor %}
 
             </div>
@@ -69,7 +66,7 @@
             <form class="like-form" id="{{post.id}}" action="{% url 'posts:like' post.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="post_id" value="{{post.id}}">
-                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
+                <button type="submit" id="like-btn-id-{{post.id}}" class="like-btn{{post.id}} custom-like-button" data-liked="{{post.liked}}" data-post-id="{{post.id}}">
                     {% if post.liked %}
                         <img src="{% static 'images/heart-full.png' %}" height="35" width="35">
                     {% else %}
@@ -80,7 +77,7 @@
             <div class="like-count{{post.id}}">
                 <a style="color:black;" href="{% url 'posts:likes' post.pk %}"><b>{{post.liked_post.count}} likes</b></a>
             </div>
-            <p>{{post.time_created}}</p>
+            <p class="small-comments">{{post.time_created}}</p>
           </div>
 
           <div class="modal-addcomment">

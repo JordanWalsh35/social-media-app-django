@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>jordiigram | {{user.username}}</title>
 
+    <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'images/logo.png' %}">
 
     <!-- Scripts -->
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/master.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/posts.css' %}">
 
     <!-- Autocomplete -->
@@ -30,39 +32,42 @@
 
     <nav class="navbar custom-navigation">
       <div class="container">
+          <div class="row">
 
-        <div class="col-md-4">
-          <p class="logo">jordiigram</p>
-        </div>
+            <div class="col-md-4 col-xs-6">
+              <p class="logo">jordiigram</p>
+            </div>
 
-        <div id="autocomplete" class="col-md-4 search-container"> <!-- autocomplete -->
-          <input class="autocomplete-input" placeholder="Search">
-          <ul class="autocomplete-result-list"></ul>  <!-- autocomplete-result-list -->
-        </div>
-
-        <script src="{% static 'js/search.js' %}"></script>
-
-        <div style="padding-left:105px;" class="col-md-4 navbar-right">
-          <ul class="nav-icons"> <!-- https://icons8.com/ -->
-              <li class="nav-list"><a href="{% url 'home' %}"><img class="nav-favicon" src="{% static 'images/home2.png' %}" alt="home-icon"></a></li>
-              <li class="nav-list"><a href="{% url 'posts:create' %}"><img class="nav-favicon" src="{% static 'images/new-post1.png' %}" alt="new-post"></a></li>
-              {% if notification_count %}
-                  <li class="nav-list"><a href="{% url 'notifications' %}">
-                      <img class="nav-favicon" src="{% static 'images/heart-red.png' %}" alt="notifications">
-                      <span class="badge">{{notification_count}}</span>
-                    </a>
-                  </li>
-              {% else %}
-                  <li class="nav-list"><a href="{% url 'notifications' %}"><img class="nav-favicon" src="{% static 'images/heart-red.png' %}" alt="notifications"></a></li>
-              {% endif %}
-              <li style="cursor:pointer;" class="nav-list"><img id="dropdown-img" class="nav-favicon" src="{% static 'images/user2.png' %}" alt="user-profile"></li>
-              <div class="dropdown-menu" id="dropdown-menu">
-                  <li><a href="{% url 'accounts:profile' request.user.username %}">Profile</a></li>
-                  <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+            <div class="search-bar">
+              <div id="autocomplete" class="col-xs-4 search-container"> <!-- autocomplete -->
+                <input class="autocomplete-input" placeholder="Search">
+                <ul class="autocomplete-result-list"></ul>  <!-- autocomplete-result-list -->
               </div>
-          </ul>
-          <script src="{% static 'js/menu.js' %}"></script>
-        </div>
+              <script src="{% static 'js/search.js' %}"></script>
+            </div>
+
+            <div class="col-md-4 col-xs-6 navbar-right">
+              <ul class="nav-icons"> <!-- https://icons8.com/ -->
+                  <li class="nav-list"><a href="{% url 'home' %}"><img class="nav-favicon" src="{% static 'images/home2.png' %}" alt="home-icon"></a></li>
+                  <li class="nav-list"><a href="{% url 'posts:create' %}"><img class="nav-favicon" src="{% static 'images/new-post1.png' %}" alt="new-post"></a></li>
+                  {% if notification_count %}
+                      <li style="position:relative;" class="nav-list"><a href="{% url 'notifications' %}">
+                          <img class="nav-favicon" src="{% static 'images/heart-red.png' %}" alt="notifications">
+                          <span class="badge">{{notification_count}}</span>
+                        </a>
+                      </li>
+                  {% else %}
+                      <li class="nav-list"><a href="{% url 'notifications' %}"><img class="nav-favicon" src="{% static 'images/heart-red.png' %}" alt="notifications"></a></li>
+                  {% endif %}
+                  <li style="cursor:pointer;" class="nav-list"><img id="dropdown-img" class="nav-favicon" src="{% static 'images/user2.png' %}" alt="user-profile"></li>
+                  <div class="dropdown-menu" id="dropdown-menu">
+                      <li><a href="{% url 'accounts:profile' request.user.username %}">Profile</a></li>
+                      <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                  </div>
+              </ul>
+              <script src="{% static 'js/menu.js' %}"></script>
+            </div>
+          </div>
 
       </div>
     </nav>

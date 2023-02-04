@@ -2,7 +2,8 @@
   position: relative;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 40px 15% 40px 15%;
+  width: 65%;
+  margin: 1% auto 4% auto
 }
 
 
@@ -51,6 +52,12 @@
 }
 
 
+.caption-username {
+  color: black;
+  font-size: 17px;
+}
+
+
 .comment-username {
   color: black;
 }
@@ -79,11 +86,13 @@
 
 .post-comment-button {
   position: absolute;
-  inset: 0 0 0 90%;
+  inset: 0 5px 0 88%;
+  display: grid;
+  place-items: center;
 }
 
 
-.custom-like {
+.custom-like-button {
   background-color: white;
   border: None;
   padding-left: 0px;
@@ -91,12 +100,9 @@
 
 
 .form-container {
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 35%;
+  margin: 10% auto 4% auto;
+  position: relative;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -154,14 +160,16 @@
 }
 
 
-.share-modal-container {
-  position: relative;
-  height: 35%;
-  width: 35%;
-  background-color: white;
-  margin: 5% auto auto auto;
-  display: grid;
-  place-items: center;
-  font-size: 25px;
-  padding: 20px;
+@media only screen and (max-width: 1000px) {
+  .feed-container {
+    width: 100%;
+  }
+
+  .form-container {
+    width: 100%;
+  }
+
+  .small-comments {
+    font-size: 12px;
+  }
 }
