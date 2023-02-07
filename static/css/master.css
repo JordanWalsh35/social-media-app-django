@@ -178,9 +178,9 @@ ul {
 .follow-username {
   position: absolute;
   inset: 0 35% 0 20%;
-  display: grid;
+  display: flex;
   align-items: center;
-  justify-items: start;
+  justify-content: start;
 }
 
 

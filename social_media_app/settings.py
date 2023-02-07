@@ -20,7 +20,6 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fflt0)w3s&lk7d+9#s*+-y0a6x7g1q#3q#vtkoz_z&xsr5odon'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,6 +82,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ebdb',
+#         'USER': 'user',
+#         'PASSWORD': 'password',
+#         'HOST': 'host-name',
+#         'PORT': '3306',
+#     }
+# }
+
 
 # CACHES = {
 #
@@ -127,10 +137,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 LOGIN_REDIRECT_URL = "home"
 
-
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'efs')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

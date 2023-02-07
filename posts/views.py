@@ -5,9 +5,6 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from rest_framework.views import APIView
-from rest_framework import authentication, permissions
-from rest_framework.response import Response
 from django.http import JsonResponse
 
 from .forms import CreatePostForm, UpdatePostForm, CreateCommentForm, ReportForm

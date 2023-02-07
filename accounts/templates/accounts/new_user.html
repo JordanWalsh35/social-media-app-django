@@ -22,9 +22,9 @@
               </div>
               <div class="follow-username">
                 <ul style="padding-left:0px">
-                  <li><a style="font-size:25px;color:black" href="{% url 'accounts:profile' user.username %}">{{user.username}}</a></li>
-                  <li style="font-size:13px">{{user.first_name}} {{user.last_name}}</li>
-                  <li style="font-size:13px">{{user.bio}}</li>
+                  <li><a style="font-size:25px;color:black;text-align:left;" href="{% url 'accounts:profile' user.username %}">{{user.username}}</a></li>
+                  <li style="font-size:13px;text-align:left;">{{user.first_name}} {{user.last_name}}</li>
+                  <li style="font-size:13px;text-align:left;">{{user.bio}}</li>
                 </ul>
               </div>
               <div class="follow-button">
